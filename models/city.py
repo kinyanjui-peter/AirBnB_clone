@@ -8,4 +8,4 @@ class City(BaseModel):
     #this class manages the attribute of city objects
 
     state_id = ""
-    name = 
+    name = ""
