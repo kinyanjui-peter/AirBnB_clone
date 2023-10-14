@@ -30,22 +30,22 @@ class HBNBCommand(cmd.Cmd):
                     on the class name and id '''
 
         if line == "" and line != "":
-            print(** class name missing **)
-            else:
+            print("** class name missing **")
+        else:
             words = line.split(' ')
             if words[0] not in storage.classes():
                 print("** class doesn't exist **")
-            elif len(words) < 2:
-                print("** instance id missing **")
-            else:
-                key = "{}.{}".format(words[0], words[1])
-                if key not in storage.all():
-                    print("** no instance found **")
-                else:
-                    print(storage.all()[key])
+    # elif:
+    #        print("** instance id missing **")
+    #    else:
+    #       key = "{}.{}".format(words[0], words[1])
+    #       if key not in storage.all():
+    #           print("** no instance found **")
+    #   else:
+    #           print(storage.all()[key])
     def do_destroys(self, line):
         '''Deletes an instance based on the class BaseModel and id'''
-        if line == "" and line != line ""
+        if line == "" and line != "":
 
          print("** class name missing **")
         else:
@@ -54,35 +54,29 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
             elif len(words) < 2:
                 print("** instance id missing **")
-            else:
-                key = "{}.{}".format(words[0], words[1])
-                if key not in storage.all():
-                    print("** no instance found **")
-                else:
-                    del storage.all()[key]
-                    storage.save()
-
+    ''' more code here'''
 
     def do_all(self, line):
         ''' 'Prints all string representation of all instances 
                    based or not on the class name'''
-          if line == "" not in List_class:
+        if line == "":
             for line in self.List_class.items():
                 print("\n** class doesn't exist **")
 
-    def do_update(self, line)
+    def do_update(self, line):
         '''update object by class name and id'''
         List_classs = List_class.splitter(line)
         dictionary = models.storage.all()
 
-         if line = "":
+        if line == "":
              print(self.List_class)
-         elif:
-             return False
-         elif len(List_class) < 2:
-             return error
+        elif line != "":
+            return False
+        elif len(List_class) < 2:
+            return error
 
-         else:
+        else:
+            exit
 
 
     def do_prompt(self, line):
