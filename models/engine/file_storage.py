@@ -8,17 +8,13 @@ import os
 
 
 class FileStorage(BaseModel):
-    #constructor for attribute initialization
-    #def __init__(self, 
-    #        _file_path = "file.json" #string - path to the JSON file
-    #       _objects = {}# dictionary - empty but will store all objects
     
-
     """class for storing and retrieving information """
     __file_path = "file.join"
-     __objects = {}
+    __objects = {}
      
     @property
+
     def all(self):
         """
         returns the dictionary __objects
@@ -32,7 +28,7 @@ class FileStorage(BaseModel):
         sets in __objects the obj with key <obj class name>.id
         """
         class_name = obj.__class__.__name__
-        self.__objects[f"{class_name}.{obj.id"} = obj
+        self.__objects[f"{class_name}.{obj.id}"] = obj
     
     #dump to json from file - serialize
     def save(self):
@@ -47,14 +43,12 @@ class FileStorage(BaseModel):
 
     #load from json to file - deserialize
     def reload(self):
-    """
-    deserializes the JSON file to __objects
-    """
+        """
+        deserializes the JSON file to __objects
+        """
         try:
             with open(self.__file_path, "r") as file:
                 ser_obj = json.load(file)
-                    for key, value in ser_dict.items():
-                        class_name, obj_id = key.split(".")
-                        self.__objcts[key] = globls()[class_name](**value)
-
-    
+            for key, value in ser_dict.items():
+                class_name, obj_id = key.split(".")
+                self.__objcts[key] = globls()[class_name](**value)
