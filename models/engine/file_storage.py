@@ -1,28 +1,25 @@
 #!/usr/bin/env python3
 """defination of the class FileStorage"""
 
-import BaseModel
+#from base_model import BaseModel
+import file_storage
 import datetime
 import json
 import os
 
 
-class FileStorage(BaseModel):
+class FileStorage:
     
     """class for storing and retrieving information """
     __file_path = "file.join"
     __objects = {}
      
-    @property
-
     def all(self):
         """
         returns the dictionary __objects
         """
         return self._objects
-        
-
-    @setter.new    
+            
     def new(self, obj):
         """
         sets in __objects the obj with key <obj class name>.id
@@ -46,9 +43,14 @@ class FileStorage(BaseModel):
         """
         deserializes the JSON file to __objects
         """
-        try:
-            with open(self.__file_path, "r") as file:
-                ser_obj = json.load(file)
-            for key, value in ser_dict.items():
-                class_name, obj_id = key.split(".")
-                self.__objcts[key] = globls()[class_name](**value)
+        #try:
+        #    with open(self.__file_path, "r") as file:
+        #        ser_obj = json.load(file)
+        #    for key, value in ser_dict.items():
+        #        class_name, obj_id = key.split(".")
+        #        self.__objcts[key] = globls()[class_name](**value)
+        if os.path.isfile(Filestorage.__file_path):
+            with open(Filestorage.__file_path, "r")as FILE:
+                for key, value in dictionary.items():
+                    obj = eval(value['__class__'])(**value)
+                    obj = FileStorage.__objects[key]
