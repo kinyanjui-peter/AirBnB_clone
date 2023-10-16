@@ -3,8 +3,8 @@
 defination of the class model
 """
 import uuid
-from datetime import datetime
-from engine import file_storage
+from datetime import datetime, date
+
 
 class BaseModel:
     """initinize the attribute
@@ -33,18 +33,17 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
-
+            
         # Check if it's a new instance (not from a dictionary representation)
-        if not args and not kwargs:
-            storage.new(self)
 
     #set a string representation for __str__
     def __str__(self):
         return f"[{self.__class__.__name__}] ({self.id} {self.__dict__})"
 
     #updates updated_at with current time
-    def save(self):
+    def save(self): 
         self.updated_at = datetime.now()
+       
 
     #access the attribute and update the time to iso standard
     def to_dict(self):
