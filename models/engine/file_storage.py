@@ -2,7 +2,7 @@
 """defination of the class FileStorage"""
 
 #from base_model import BaseModel
-import file_storage
+#import file_storage
 import datetime
 import json
 import os
@@ -18,7 +18,7 @@ class FileStorage:
         """
         returns the dictionary __objects
         """
-        return self._objects
+        return self.__objects
             
     def new(self, obj):
         """
@@ -33,7 +33,7 @@ class FileStorage:
         serializes __objects to the JSON file (path: __file_path)
         """
         ser_dict = {}
-        for key, obj in self.objects.items():
+        for key, obj in self.__objects.items():
             ser_dict[key] = obj.to_dict()
         with open(self.__file_path, "w") as file:
             json.dump(ser_dict, file)
@@ -49,7 +49,7 @@ class FileStorage:
         #    for key, value in ser_dict.items():
         #        class_name, obj_id = key.split(".")
         #        self.__objcts[key] = globls()[class_name](**value)
-        if os.path.isfile(Filestorage.__file_path):
+        if os.path.isfile(FileStorage.__file_path):
             with open(Filestorage.__file_path, "r")as FILE:
                 for key, value in dictionary.items():
                     obj = eval(value['__class__'])(**value)
