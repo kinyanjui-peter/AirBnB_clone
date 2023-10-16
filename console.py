@@ -77,18 +77,31 @@ class HBNBCommand(cmd.Cmd):
 
         else:
             exit
-
+    
+    def do_help(self, line):
+        '''Get help on commands'''
+        if line:
+            cmd.Cmd.do_help(self, line)
+        else:
+            print("Documented commands (type help <topic>):")
+            print("======================================== ")
+            print("EOF help  quit")
 
     def do_prompt(self, line):
         "Change the interactive prompt"
         self.prompt = line + ': '
+
     def do_quit(self, line):
-        '''quit command to terminate the program '''
+        '''quit command to exit the  program '''
         return True
+
     def do_EOF(self, line):
 
         '''end the program '''
         return True
+    def emptyline(self):
+        """Do nothing when an empty line is entered"""
+        pass
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
