@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """defination of the class FileStorage"""
 
-#from base_model import BaseModel
+from models.base_model import BaseModel
 #import file_storage
 import datetime
 import json
@@ -43,14 +43,9 @@ class FileStorage:
         """
         deserializes the JSON file to __objects
         """
-        #try:
-        #    with open(self.__file_path, "r") as file:
-        #        ser_obj = json.load(file)
-        #    for key, value in ser_dict.items():
-        #        class_name, obj_id = key.split(".")
-        #        self.__objcts[key] = globls()[class_name](**value)
         if os.path.isfile(FileStorage.__file_path):
-            with open(Filestorage.__file_path, "r")as FILE:
-                for key, value in dictionary.items():
+            with open(FileStorage.__file_path, "r")as FILE:
+                data = json.load(FILE)
+                for key, value in data.items():
                     obj = eval(value['__class__'])(**value)
-                    obj = FileStorage.__objects[key]
+                    self.__objects[key] = obj
