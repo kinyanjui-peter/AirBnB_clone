@@ -2,107 +2,130 @@
 '''Entry point of command interpreter '''
 
 import cmd
-from models.engine.__init__ import storage
-#importing a module
+from models.engine.file_storage import FileStorage
+from models.base_model import BaseModel
+import shlex
+import datetime
 
-List_clas = ['amenity', 'city', 'place', 'user', 'state']
+storage = FileStorage()
+storage.reload()
+
+List_class = ['BaseModel']
 
 class HBNBCommand(cmd.Cmd):
     '''definition and managing object attribute '''
 
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def do_create(self, line):
-
-        '''instane of BaseModel'''
-
-        if line == "" or line is None:
+        '''Creates a new instance of BaseModel, saves it 
+        (to the JSON file), and prints the id'''
+        args = shlex.split(line)
+        if len(args) == 0:
             print("** class name missing **")
-        elif line not in storage.classes():
+        elif args[0] not in List_class:
             print("** class doesn't exist **")
         else:
-            obj = storage.classes()[line]()
+            obj = BaseModel()
             obj.save()
             print(obj.id)
 
     def do_show(self, line):
-
-        '''Prints the string representation of an instance based 
-                    on the class name and id '''
-
-        if line == "" and line != "":
+        '''Prints the string representation of an instance
+        based on the class name and id'''
+        args = shlex.split(line)
+        if len(args) == 0:
             print("** class name missing **")
+        elif args[0] not in List_class:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
         else:
-            words = line.split(' ')
-            if words[0] not in storage.classes():
-                print("** class doesn't exist **")
-    # elif:
-    #        print("** instance id missing **")
-    #    else:
-    #       key = "{}.{}".format(words[0], words[1])
-    #       if key not in storage.all():
-    #           print("** no instance found **")
-    #   else:
-    #           print(storage.all()[key])
-    def do_destroys(self, line):
-        '''Deletes an instance based on the class BaseModel and id'''
-        if line == "" and line != "":
+            all_objs = storage.all()
+            key = args[0] + "." + args[1]
+            if key in all_objs:
+                print(all_objs[key])
+            else:
+                print("** no instance found **")
 
-         print("** class name missing **")
+    def do_destroy(self, line):
+        '''Deletes an instance based on the class name and id'''
+        args = shlex.split(line)
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in List_class:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
         else:
-            words = line.split(' ')
-            if words[0] not in storage.classes():
-                print("** class doesn't exist **")
-            elif len(words) < 2:
-                print("** instance id missing **")
-    ''' more code here'''
+            all_objs = storage.all()
+            key = args[0] + "." + args[1]
+            if key in all_objs:
+                del all_objs[key]
+                storage.save()
+            else:
+                print("** no instance found **")
 
     def do_all(self, line):
-        ''' 'Prints all string representation of all instances 
-                   based or not on the class name'''
-        if line == "":
-            for line in self.List_class.items():
-                print("\n** class doesn't exist **")
+        '''Prints all string representation of all instances 
+        based or not on the class name'''
+        args = shlex.split(line)
+        all_objs = storage.all()
+        if len(args) == 0:
+            print([str(all_objs[key]) for key in all_objs])
+        elif args[0] not in List_class:
+            print("** class doesn't exist **")
+        else:
+            print([str(all_objs[key]) for key in all_objs if key.startswith(args[0])])
 
     def do_update(self, line):
-        '''update object by class name and id'''
-        List_classs = List_class.splitter(line)
-        dictionary = models.storage.all()
-
-        if line == "":
-             print(self.List_class)
-        elif line != "":
-            return False
-        elif len(List_class) < 2:
-            return error
-
+        '''Updates an instance based on the class name and
+        id by adding or updating attribute'''
+        args = shlex.split(line)
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in List_class:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
         else:
-            exit
-    
-    def do_help(self, line):
+            all_objs = storage.all()
+            key = args[0] + "." + args[1]
+            if key not in all_objs:
+                print("** no instance found **")
+                return
+            if len(args) < 3:
+                print("** attribute name missing **")
+                return
+            if len(args) < 4:
+                print("** value missing **")
+                return
+            attr_name = args[2]
+            attr_value = args[3]
+            try:
+                attr_value = eval(attr_value)
+            except (NameError, SyntaxError):
+                pass
+            obj = all_objs[key]
+            setattr(obj, attr_name, attr_value)
+            obj.save()
+
+    def do_help(self, arg):
         '''Get help on commands'''
-        if line:
-            cmd.Cmd.do_help(self, line)
-        else:
-            print("Documented commands (type help <topic>):")
-            print("======================================== ")
-            print("EOF help  quit")
+        cmd.Cmd.do_help(self, arg)
 
-    def do_prompt(self, line):
-        "Change the interactive prompt"
-        self.prompt = line + ': '
-
-    def do_quit(self, line):
-        '''quit command to exit the  program '''
+    def do_quit(self, arg):
+        '''Quit command to exit the program'''
         return True
 
-    def do_EOF(self, line):
-
-        '''end the program '''
+    def do_EOF(self, arg):
+        '''End the program'''
         return True
+
     def emptyline(self):
         """Do nothing when an empty line is entered"""
         pass
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
