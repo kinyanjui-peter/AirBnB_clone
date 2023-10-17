@@ -10,7 +10,7 @@ import datetime
 storage = FileStorage()
 storage.reload()
 
-List_class = ['BaseModel']
+List_class = ['BaseModel', 'User']
 
 class HBNBCommand(cmd.Cmd):
     '''definition and managing object attribute '''
