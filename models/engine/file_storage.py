@@ -2,7 +2,7 @@
 """defination of the class FileStorage"""
 
 from models.base_model import BaseModel
-#import file_storage
+from models.user import User
 import datetime
 import json
 import os
