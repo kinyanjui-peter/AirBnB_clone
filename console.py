@@ -2,6 +2,7 @@
 '''Entry point of command interpreter '''
 
 import cmd
+from models.engine.__init__ import storage
 #importing a module
 
 List_clas = ['amenity', 'city', 'place', 'user', 'state']
