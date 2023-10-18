@@ -12,6 +12,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+from models.engine.__init__ import storage
 
 storage = FileStorage()
 storage.reload()
@@ -34,7 +35,18 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in List_class:
             print("** class doesn't exist **")
         else:
-            obj = BaseModel()
+            if args[0] == "BaseModel":
+                obj = BaseModel()
+            elif args[0] == "State":
+                obj = State()
+            elif args[0] == "City":
+                obj = City()
+            elif args[0] == "Amenity":
+                obj = Amenity()
+            elif args[0] == "Place":
+                obj = Place()
+            elif args[0] == "Review":
+                obj = Review()
             obj.save()
             print(obj.id)
 
