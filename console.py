@@ -121,9 +121,11 @@ class HBNBCommand(cmd.Cmd):
 
     def do_help(self, arg):
         ''' print help'''
+        print("")
         print("Documented commands (type help <topic>):")
         print("========================================")
         print("EOF  help  quit")
+        print("")
         
 
     def do_quit(self, arg):
