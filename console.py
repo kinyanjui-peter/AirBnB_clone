@@ -35,18 +35,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in List_class:
             print("** class doesn't exist **")
         else:
-            if args[0] == "BaseModel":
-                obj = BaseModel()
-            elif args[0] == "State":
-                obj = State()
-            elif args[0] == "City":
-                obj = City()
-            elif args[0] == "Amenity":
-                obj = Amenity()
-            elif args[0] == "Place":
-                obj = Place()
-            elif args[0] == "Review":
-                obj = Review()
+            obj = BaseModel()
             obj.save()
             print(obj.id)
 

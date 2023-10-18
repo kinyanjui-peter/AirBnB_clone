@@ -47,24 +47,5 @@ class FileStorage:
             with open(FileStorage.__file_path, "r")as FILE:
                 data = json.load(FILE)
                 for key, value in data.items():
-                    class_name = key.split('.')[0]
-                if class_name == 'Place':
-                    from models.place import Place
-                    obj = Place(**value)
-                elif class_name == 'State':
-                    from models.state import State
-                    obj = State(**value)
-                elif class_name == 'City':
-                    from models.city import City
-                    obj = City(**value)
-                elif class_name == 'Amenity':
-                    from models.amenity import Amenity
-                    obj = Amenity(**value)
-                elif class_name == 'Review':
-                    from models.review import Review
-                    obj = Review(**value)
-                else:
-                    continue
-                FileStorage.__objects[key] = obj
-    except FileNotFoundError:
-        pass
+                    obj = eval(value['__class__'])(**value)
+                    self.__objects[key] = obj
