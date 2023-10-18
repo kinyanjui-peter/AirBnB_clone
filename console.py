@@ -120,11 +120,14 @@ class HBNBCommand(cmd.Cmd):
             obj.save()
 
     def do_help(self, arg):
-        '''Get help on commands'''
-        cmd.Cmd.do_help(self, arg)
+        ''' print help'''
+        print("Documented commands (type help <topic>):")
+        print("========================================")
+        print("EOF  help  quit")
+        
 
     def do_quit(self, arg):
-        print("EOF  help  quit")
+        '''Quit the program'''
         return True
 
     def do_EOF(self, arg):
