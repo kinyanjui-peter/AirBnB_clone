@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 #!/usr/bin/python3
 """Module for FileStorage class."""
+=======
+#!/usr/bin/env python3
+"""defination of the class FileStorage"""
+
+from models.base_model import BaseModel
+from models.user import User
+>>>>>>> 45ac66ca196f22bda871f73eb753a430b9041c15
 import datetime
 import json
 import os

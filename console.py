@@ -6,11 +6,20 @@ from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 import shlex
 import datetime
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.engine.__init__ import storage
 
 storage = FileStorage()
 storage.reload()
 
-List_class = ['BaseModel', 'User']
+List_class = {'BaseModel': BaseModel, 'State': State, 'City': City,
+               'Amenity': Amenity, 'Place': Place, 'Review': Review,
+               'User': User}
 
 class HBNBCommand(cmd.Cmd):
     '''definition and managing object attribute '''
@@ -111,11 +120,16 @@ class HBNBCommand(cmd.Cmd):
             obj.save()
 
     def do_help(self, arg):
-        '''Get help on commands'''
-        cmd.Cmd.do_help(self, arg)
+        ''' print help'''
+        print("")
+        print("Documented commands (type help <topic>):")
+        print("========================================")
+        print("EOF  help  quit")
+        print("")
+        
 
     def do_quit(self, arg):
-        '''Quit command to exit the program'''
+        '''Quit the program'''
         return True
 
     def do_EOF(self, arg):
