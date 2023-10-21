@@ -1,4 +1,4 @@
-This project is a coninuation of AirBnBclone websites
-it contains files used in building the websites 
-the programming language of interest is
+This project is a continuation of AirBnBclone websites
+it contains files used for building websites 
+the programming languages used is:
 <--HTML.html  and CSS.css-->
