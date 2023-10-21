@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-''' this module creates a  review class'''
+"""This module creates a Review class"""
 
-from models.BaseModel import BaseModel
+from models.base_model import BaseModel
 
-class reviews(BaseModel):
 
-    '''the class to manage objects attribute for the review '''
-     
+class Review(BaseModel):
+    """Class for managing review objects"""
+
     place_id = ""
     user_id = ""
     text = ""

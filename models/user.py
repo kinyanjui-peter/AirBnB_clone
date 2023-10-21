@@ -4,11 +4,9 @@ from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    '''User class that inherits from BaseModel'''
+    """Class for managing user objects"""
 
     email = ""
     password = ""
     first_name = ""
     last_name = ""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
