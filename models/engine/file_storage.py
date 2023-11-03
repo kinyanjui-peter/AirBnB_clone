@@ -1,96 +1,77 @@
 #!/usr/bin/python3
-"""Module for FileStorage class."""
-import datetime
+"""File Storage Class"""
+
+
 import json
-import os
+from models.base_model import BaseModel as Base
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.user import User
 
 
 class FileStorage:
+    """
+    This class implements a file storage module for serializing instances
+    to a JSON file and deserializing JSON files to instances.
+    """
 
-    """Class for storing and retrieving data"""
-    __file_path = "file.json"
-    __objects = {}
+    __file_path = "file.json"  # Path for the JSON file
+    __objects = {}  # Dictionary to store objects
 
     def all(self):
-        """returns the dictionary __objects"""
-        return FileStorage.__objects
+        """
+        Retrieves the dictionary containing all objects.
 
-    def new(self, obj):
-        """sets in __objects the obj with key <obj class name>.id"""
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        Returns:
+            dict: A dictionary containing all objects.
+        """
+        return self.__objects
+
+    def new(self, instance):
+        """
+        Adds a new instance to the dictionary of objects.
+
+        Args:
+            instance: The instance to be added.
+        """
+        class_name = instance.__class__.__name__
+        self.__objects[f"{class_name}.{instance.id}"] = instance
 
     def save(self):
-        """ serializes __objects to the JSON file (path: __file_path)"""
-        with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
-            d = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
-            json.dump(d, f)
-
-    def classes(self):
-        """Returns a dictionary of valid classes and their references"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
-
-        classes = {"BaseModel": BaseModel,
-                   "User": User,
-                   "State": State,
-                   "City": City,
-                   "Amenity": Amenity,
-                   "Place": Place,
-                   "Review": Review}
-        return classes
+        """
+        Serializes the objects dictionary to a JSON file.
+        The path to the JSON file is specified by __file_path.
+        """
+        object_dictionary = {}
+        for key, instance in self.__objects.items():
+            object_dictionary[key] = instance.to_dict()
+        with open(self.__file_path, "w") as file:
+            json.dump(object_dictionary, file)
 
     def reload(self):
-        """Reloads the stored objects"""
-        if not os.path.isfile(FileStorage.__file_path):
-            return
-        with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
-            obj_dict = json.load(f)
-            obj_dict = {k: self.classes()[v["__class__"]](**v)
-                        for k, v in obj_dict.items()}
-            # TODO: should this overwrite or insert?
-            FileStorage.__objects = obj_dict
-
-    def attributes(self):
-        """Returns the valid attributes and their types for classname"""
-        attributes = {
-            "BaseModel":
-                     {"id": str,
-                      "created_at": datetime.datetime,
-                      "updated_at": datetime.datetime},
-            "User":
-                     {"email": str,
-                      "password": str,
-                      "first_name": str,
-                      "last_name": str},
-            "State":
-                     {"name": str},
-            "City":
-                     {"state_id": str,
-                      "name": str},
-            "Amenity":
-                     {"name": str},
-            "Place":
-                     {"city_id": str,
-                      "user_id": str,
-                      "name": str,
-                      "description": str,
-                      "number_rooms": int,
-                      "number_bathrooms": int,
-                      "max_guest": int,
-                      "price_by_night": int,
-                      "latitude": float,
-                      "longitude": float,
-                      "amenity_ids": list},
-            "Review":
-            {"place_id": str,
-                         "user_id": str,
-                         "text": str}
+        """
+        Deserializes the JSON file and updates the objects dictionary.
+        If the JSON file (__file_path) exists, it reads the file
+        and loads the objects. If the file doesn't exist, it does nothing.
+        """
+        class_list = {
+            'BaseModel': Base,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Place': Place,
+            'Review': Review,
+            'User': User
         }
-        return attributes
 
+        try:
+            with open(self.__file_path, "r") as file:
+                object_dictionary = json.load(file)
+                for key, value in object_dictionary.items():
+                    class_name, instance_id = key.split(".")
+                    self.__objects[key] = class_list[class_name](**value)
+        except FileNotFoundError:
+            pass
